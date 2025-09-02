@@ -13,7 +13,7 @@ public class PersonaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true, length = 8)
+    @Column(name = "first_name")
     private String firstName;
     @Column(name = "first_last_name")
     private String firstLastName;
@@ -21,7 +21,7 @@ public class PersonaEntity {
     private String secondLastName;
     @Column(name = "full_name")
     private String fullName;
-    @Column(name = "document_number")
+    @Column(nullable = false, unique = true, length = 8)
     private String documentNumber;
 
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface PersonaRepository
         extends JpaRepository<PersonaEntity, Long> {
-     Optional<PersonaEntity> findByDni(String dni);
+     Optional<PersonaEntity> findByDocumentNumber(String dni);
 }
