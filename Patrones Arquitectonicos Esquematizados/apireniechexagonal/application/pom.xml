@@ -15,5 +15,10 @@
             <artifactId>infraestructure</artifactId>
             <version>11.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.codigo</groupId>
+            <artifactId>domain</artifactId>
+            <version>11.0.0</version>
+        </dependency>
     </dependencies>
 </project>

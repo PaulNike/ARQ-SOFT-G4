@@ -1,4 +1,11 @@
 package com.codigo.domain.aggregates.dto;
 
-public class PersonaDTO {
+
+public record PersonaDTO(Long id,
+                         String firstName,
+                         String firstLastName,
+                         String secondLastName,
+                         String fullName,
+                         String documentNumber) {
 }
+
