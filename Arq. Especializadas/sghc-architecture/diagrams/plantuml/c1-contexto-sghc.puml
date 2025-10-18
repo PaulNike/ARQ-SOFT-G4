@@ -1,0 +1,78 @@
+@startuml SGHC
+' ============================================================
+' SGHC - Diagrama de Contexto (C1)
+' Autor: Paul Rodríguez — Arquitecto de Software
+' ============================================================
+title SGHC — Diagrama de Contexto (C1)
+caption Sistema de Gestión de Historias Clínicas (SGHC)
+
+skinparam backgroundColor #ffffff
+skinparam rectangle {
+  BackgroundColor #f9fafb
+  BorderColor #374151
+  RoundCorner 20
+}
+skinparam actor {
+  BackgroundColor #f3f4f6
+  BorderColor #111827
+}
+skinparam note {
+  BackgroundColor #fffbe6
+  BorderColor #999
+  FontSize 12
+}
+skinparam shadowing false
+skinparam dpi 150
+skinparam defaultFontName "Segoe UI"
+
+' ============================================================
+' Actores externos
+' ============================================================
+actor "Paciente" as Paciente
+actor "Médico" as Medico
+actor "Recepcionista" as Recepcion
+actor "Farmacia" as Farmacia
+actor "Auditor / Regulador" as Auditor
+actor "Aseguradora" as Aseguradora
+actor "Laboratorio Externo" as Laboratorio
+rectangle "Proveedor de Autenticación (OIDC / Keycloak)" as OIDC
+
+' ============================================================
+' Sistema principal
+' ============================================================
+rectangle "SGHC\nSistema de Gestión de Historias Clínicas" as SGHC {
+  rectangle "Módulo Paciente" as ModPaciente
+  rectangle "Módulo Clínico" as ModClinico
+  rectangle "Módulo de Integración" as ModIntegracion
+  rectangle "Adaptadores de FHIR / HL7" as FHIR
+}
+
+' ============================================================
+' Relaciones principales
+' ============================================================
+Paciente --> ModPaciente : Consultar citas, resultados, recetas
+Medico --> ModClinico : Registrar atenciones, diagnósticos, emitir recetas
+Recepcion --> ModClinico : Registrar pacientes, gestionar agenda y check-in
+Farmacia --> ModClinico : Validar recetas, prescribir medicamentos
+Auditor --> ModIntegracion : Auditoría y cumplimiento
+OIDC --> ModPaciente : Autenticación y validación de usuario
+OIDC --> ModClinico : Validación de credenciales
+Aseguradora <-- ModIntegracion : Autorización / Cobertura
+Laboratorio <-- FHIR : Resultados y observaciones
+ModPaciente --> ModIntegracion
+ModClinico --> ModIntegracion
+ModIntegracion --> FHIR
+
+' ============================================================
+' Notas descriptivas
+' ============================================================
+note right of SGHC
+Sistema central que consolida la información clínica, recetas,
+documentos y auditorías de pacientes.  
+Incluye gestión de identidad, interoperabilidad y trazabilidad completa.
+end note
+
+note "Cumple estándares HL7/FHIR\nSeguridad: OIDC, TLS 1.3\nRegulaciones: MINSA, HIPAA" as n1
+n1 .. SGHC
+
+@enduml

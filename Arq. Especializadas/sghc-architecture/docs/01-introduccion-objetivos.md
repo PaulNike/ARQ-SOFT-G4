@@ -7,7 +7,7 @@
 ## 1.1 Contexto actual
 
 La red de clínicas **Salud Integral** opera en 5 sedes urbanas con aproximadamente **3.000 consultas diarias**.  
-Cada sede administra historias clínicas de forma **descentralizada y heterogénea**, con parte de la información en papel y otra en bases de datos no sincronizadas:contentReference[oaicite:0]{index=0}.  
+Cada sede administra historias clínicas de forma **descentralizada y heterogénea**, con parte de la información en papel y otra en bases de datos no sincronizadas.  
 Esto genera duplicidades, errores clínicos y deficiencias en trazabilidad y cumplimiento regulatorio.
 
 ## 1.2 Problema
@@ -19,7 +19,7 @@ Esto genera duplicidades, errores clínicos y deficiencias en trazabilidad y cum
 
 ## 1.3 Visión
 
-Proveer un **expediente clínico único, seguro y accesible** para todas las sedes, profesionales y pacientes, reduciendo tiempos, errores y riesgos regulatorios, e integrando laboratorios, farmacias y aseguradoras:contentReference[oaicite:1]{index=1}.
+Proveer un **expediente clínico único, seguro y accesible** para todas las sedes, profesionales y pacientes, reduciendo tiempos, errores y riesgos regulatorios, e integrando laboratorios, farmacias y aseguradoras :contentReference[oaicite:1]{index=1}.
 
 ## 1.4 Objetivos estratégicos
 

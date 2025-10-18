@@ -30,4 +30,5 @@
 
 ## 3.4 Diagrama de contexto
 
-Ver `docs/diagrams/plantuml/c1-contexto.puml`.
+Ver diagrama completo:  
+[`/docs/diagrams/plantuml/c1-contexto-sghc.puml`](../diagrams/plantuml/c1-contexto-sghc.puml)
