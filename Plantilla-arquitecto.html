@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Plantilla de Evaluación Tecnológica (Arquitectura)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --bg:#0f172a;           /* azul noche */
+    --bg-alt:#111827;
+    --fg:#e5e7eb;           /* gris muy claro */
+    --muted:#9ca3af;        /* gris medio */
+    --brand:#2563eb;        /* azul corporativo */
+    --ok:#22c55e;           /* verde */
+    --warn:#f59e0b;         /* ámbar */
+    --risk:#ef4444;         /* rojo */
+    --line:#1f2a44;         /* línea */
+    --card:#0b1222;         /* tarjeta */
+  }
+  html,body{background:var(--bg); color:var(--fg); font:14px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif; margin:0; padding:24px;}
+  h1{margin: 0 0 6px 0; font-weight:700;}
+  h2{margin: 28px 0 10px 0; font-weight:600;}
+  .subtitle{color:var(--muted); margin-bottom:20px}
+  .legend, .tips {background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .grid{display:grid; gap:16px; grid-template-columns: 1fr 1fr;}
+  @media (max-width:960px){ .grid{grid-template-columns: 1fr;} }
+  table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:14px; border:1px solid var(--line); background:linear-gradient(180deg,var(--bg-alt),var(--bg));}
+  thead th{background:linear-gradient(180deg,#0f1c36,#0d162a); color:#dbeafe; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.04em; padding:10px;}
+  tbody td{padding:10px 12px; border-top:1px solid var(--line); vertical-align:top;}
+  tfoot td{padding:12px; background:#0c1428; border-top:1px solid var(--line); font-weight:600;}
+  .crit{white-space:nowrap;}
+  .muted{color:var(--muted);}
+  .chip{display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); background:#0b1222;}
+  .score{font-variant-numeric:tabular-nums;}
+  .risk-low{color:var(--ok);} .risk-med{color:var(--warn);} .risk-high{color:var(--risk);}
+  .w-64{width:64px; text-align:center;}
+  .w-80{width:80px; text-align:center;}
+  .wrap{white-space:normal; max-width:420px}
+  .right{text-align:right}
+  .brand{color:#bfdbfe}
+  .small{font-size:12px}
+  .kbd{background:#0b1222;border:1px solid var(--line); padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+
+<h1>Plantilla de Evaluación Tecnológica</h1>
+<div class="subtitle">Usa esta tabla para comparar herramientas/tecnologías y tomar una decisión informada (arc42 §5.2 / ADRs).</div>
+
+<div class="grid">
+  <div class="legend">
+    <h2 class="brand">Leyenda de puntajes (1–5)</h2>
+    <ul class="small">
+      <li><b>1</b> = Muy deficiente • <b>2</b> = Deficiente • <b>3</b> = Aceptable • <b>4</b> = Bueno • <b>5</b> = Excelente</li>
+      <li><b>Peso</b>: importancia relativa del criterio (0.1 a 1.0). <b>Puntuación ponderada</b> = Peso × Score.</li>
+      <li>Duplica filas para más criterios y columnas para más opciones.</li>
+    </ul>
+  </div>
+  <div class="tips">
+    <h2 class="brand">Sugerencias de uso</h2>
+    <ul class="small">
+      <li>Define <span class="kbd">Opciones</span> (p. ej., React, Angular, Vue) en las columnas.</li>
+      <li>Llena “Evidencia/Notas” con enlaces a PoC, benchmarks, auditorías, o requisitos de negocio.</li>
+      <li>Riesgo: <span class="risk-low">Bajo</span> • <span class="risk-med">Medio</span> • <span class="risk-high">Alto</span>.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="brand">Matriz de Comparación</h2>
+<table>
+  <thead>
+    <tr>
+      <th class="crit">Criterio</th>
+      <th class="w-80">Peso</th>
+      <th>Opción A</th>
+      <th>Score</th>
+      <th class="w-80">Pond.</th>
+      <th>Opción B</th>
+      <th>Score</th>
+      <th class="w-80">Pond.</th>
+      <th>Opción C</th>
+      <th>Score</th>
+      <th class="w-80">Pond.</th>
+      <th>Riesgo</th>
+      <th class="wrap">Evidencia / Notas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- ======= EJEMPLO (puedes borrar) ======= -->
+    <tr>
+      <td class="crit">Curva de aprendizaje</td>
+      <td class="w-80 score">0.6</td>
+      <td>React</td>
+      <td class="w-64 score">4</td>
+      <td class="w-80 score">2.4</td>
+      <td>Angular</td>
+      <td class="w-64 score">2</td>
+      <td class="w-80 score">1.2</td>
+      <td>Vue</td>
+      <td class="w-64 score">4</td>
+      <td class="w-80 score">2.4</td>
+      <td class="risk-low">Bajo</td>
+      <td class="wrap muted">Equipo con experiencia previa en JS/React. Bootcamps internos disponibles.</td>
+    </tr>
+    <!-- ======= PLANTILLA BASE (duplica estas filas) ======= -->
+    <tr>
+      <td class="crit">Rendimiento (render/latencia)</td>
+      <td class="w-80 score">0.8</td>
+      <td>Opción A</td>
+      <td class="w-64 score">—</td>
+      <td class="w-80 score">—</td>
+      <td>Opción B</td>
+      <td class="w-64 score">—</td>
+      <td class="w-80 score">—</td>
+      <td>Opción C</td>
+      <td class="w-64 score">—</td>
+      <td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">Result. PoC, Lighthouse, Web Vitals.</td>
+    </tr>
+    <tr>
+      <td class="crit">Escalabilidad (horizontal/autoescalado)</td>
+      <td class="w-80 score">0.7</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">Compatibilidad con CDN/SSR/HPA.</td>
+    </tr>
+    <tr>
+      <td class="crit">Mantenibilidad (clean code / tooling)</td>
+      <td class="w-80 score">0.7</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-low">Bajo</td>
+      <td class="wrap muted">Linters, formateadores, DX, patrón de carpetas.</td>
+    </tr>
+    <tr>
+      <td class="crit">Seguridad (OIDC, OWASP, TLS)</td>
+      <td class="w-80 score">1.0</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-high">Alto</td>
+      <td class="wrap muted">Soporte SSO, CSP, mitigación XSS/CSRF, firmas JWT.</td>
+    </tr>
+    <tr>
+      <td class="crit">Interoperabilidad / Estándares</td>
+      <td class="w-80 score">0.6</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">OpenAPI/GraphQL, FHIR/HL7 (si aplica), i18n, accesibilidad.</td>
+    </tr>
+    <tr>
+      <td class="crit">DX / Productividad del equipo</td>
+      <td class="w-80 score">0.7</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-low">Bajo</td>
+      <td class="wrap muted">CLI, hot-reload, plantillas, documentación.</td>
+    </tr>
+    <tr>
+      <td class="crit">Disponibilidad de talento</td>
+      <td class="w-80 score">0.5</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">Senioridad interna, curva de aprendizaje, comunidad local.</td>
+    </tr>
+    <tr>
+      <td class="crit">Madurez & Soporte</td>
+      <td class="w-80 score">0.6</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-low">Bajo</td>
+      <td class="wrap muted">Roadmap, releases, LTS, soporte comercial.</td>
+    </tr>
+    <tr>
+      <td class="crit">Costos / TCO (licencias, cloud, ops)</td>
+      <td class="w-80 score">0.8</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">CapEx/OpEx, licencias, soporte, training, infraestructura.</td>
+    </tr>
+    <tr>
+      <td class="crit">Cumplimiento / Regulación</td>
+      <td class="w-80 score">0.9</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-high">Alto</td>
+      <td class="wrap muted">Ley 29733 / GDPR / HIPAA, residencia de datos, auditoría.</td>
+    </tr>
+    <tr>
+      <td class="crit">Operabilidad (observabilidad/Soporte)</td>
+      <td class="w-80 score">0.6</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-low">Bajo</td>
+      <td class="wrap muted">Logs, métricas, trazas; integración con Prometheus/Grafana.</td>
+    </tr>
+    <tr>
+      <td class="crit">Portabilidad / Lock-in</td>
+      <td class="w-80 score">0.5</td>
+      <td>Opción A</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción B</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td>Opción C</td><td class="w-64 score">—</td><td class="w-80 score">—</td>
+      <td class="risk-med">Medio</td>
+      <td class="wrap muted">Dependencia de vendor, formatos abiertos, contenedores.</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3" class="right">Total ponderado — Opción A</td>
+      <td></td><td class="w-80 score">—</td>
+      <td class="right">Total ponderado — Opción B</td>
+      <td></td><td class="w-80 score">—</td>
+      <td class="right">Total ponderado — Opción C</td>
+      <td></td><td class="w-80 score">—</td>
+      <td colspan="2"></td>
+    </tr>
+  </tfoot>
+</table>
+
+<p class="small muted" style="margin-top:10px">
+Sugerencia: registra la decisión final como <b>ADR</b> (contexto, fuerzas en conflicto, decisión, consecuencias) y enlaza esta matriz como evidencia.
+</p>
+
+</body>
+</html>

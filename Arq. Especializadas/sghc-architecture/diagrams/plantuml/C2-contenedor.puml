@@ -1,0 +1,83 @@
+@startuml SGHC-Contenedor
+title SGHC — Diagrama de Contenedores (C2)
+skinparam backgroundColor #ffffff
+skinparam rectangle {
+  BackgroundColor #f9fafb
+  BorderColor #374151
+  RoundCorner 15
+}
+skinparam cloud {
+  BackgroundColor #f3f4f6
+  BorderColor #6b7280
+}
+skinparam database {
+  BackgroundColor #f3f4f6
+  BorderColor #6b7280
+}
+skinparam component {
+  BackgroundColor #fdfdfd
+  BorderColor #555
+}
+skinparam note {
+  BackgroundColor #fffbe6
+  BorderColor #999
+  FontSize 12
+}
+skinparam defaultFontName "Segoe UI"
+skinparam dpi 150
+
+actor "Paciente" as Paciente
+actor "Profesional de Salud" as Medico
+actor "Farmacia" as Farmacia
+actor "Aseguradora" as Aseguradora
+actor "Laboratorio" as Lab
+
+rectangle "API Gateway\n(NGINX Ingress + OIDC)" as Gateway {
+}
+
+rectangle "Portal del Paciente\n(React SPA)" as Front
+rectangle "Módulo Clínico\n(React + Quarkus API)" as Clinica
+rectangle "Microservicios Backend (Java/Quarkus)" {
+  [ms-pacientes]
+  [ms-citas]
+  [ms-atenciones]
+  [ms-recetas]
+  [ms-auditoria]
+  [ms-interoperabilidad]
+}
+
+database "PostgreSQL\npor microservicio" as DB
+cloud "Kafka Cluster\n(Event Broker)" as Kafka
+cloud "Keycloak\n(OIDC Server)" as OIDC
+cloud "MinIO / S3\n(Almacenamiento documentos)" as Minio
+
+Paciente --> Front : Consultas, resultados, recetas
+Medico --> Clinica : Registrar atención, diagnósticos
+Front --> Gateway
+Clinica --> Gateway
+Gateway --> [ms-pacientes]
+Gateway --> [ms-citas]
+Gateway --> [ms-atenciones]
+Gateway --> [ms-recetas]
+[ms-pacientes] --> DB
+[ms-citas] --> DB
+[ms-recetas] --> DB
+[ms-atenciones] --> DB
+[ms-auditoria] --> DB
+[ms-interoperabilidad] --> Kafka
+[ms-auditoria] --> Kafka
+Gateway --> OIDC : Autenticación
+[ms-interoperabilidad] --> Aseguradora
+[ms-interoperabilidad] --> Lab
+[ms-recetas] --> Farmacia
+[ms-recetas] --> Minio : Guardar PDF recetas
+
+note right of Gateway
+Gestión central de acceso, auditoría, rate limiting y trazabilidad
+end note
+
+note bottom of Kafka
+Canal de eventos clínicos (receta.creada, paciente.actualizado, etc.)
+end note
+
+@enduml
