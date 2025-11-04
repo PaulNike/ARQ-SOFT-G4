@@ -1,0 +1,28 @@
+@startuml
+title SGHC - C3: Módulo de Auditoría
+skinparam rectangle {
+  BackgroundColor #F9FAFB
+  BorderColor #374151
+  RoundCorner 15
+}
+
+rectangle "Módulo Auditoría" as Aud {
+  component "EventConsumer (Kafka)" as Cons
+  component "AuditService" as Service
+  database "DB_Auditoria\n(PostgreSQL + AES-256)" as DB
+  component "LogExporter (ELK)" as Export
+  component "RetentionScheduler" as Retention
+}
+
+actor "Administrador de Seguridad" as Admin
+Cons --> Service : Recibir eventos SGHC
+Service --> DB : Persistir registros auditables
+Service --> Export : Enviar logs a Elastic
+Admin --> Export : Consultar reportes
+Retention --> DB : Purga controlada de logs
+
+note right of Aud
+Centraliza el registro de operaciones
+para trazabilidad y cumplimiento legal (Ley 29733).
+end note
+@enduml

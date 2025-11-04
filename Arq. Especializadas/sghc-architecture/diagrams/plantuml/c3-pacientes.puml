@@ -1,0 +1,32 @@
+@startuml
+title SGHC - C3: Módulo de Pacientes
+skinparam rectangle {
+  BackgroundColor #ECFDF5
+  BorderColor #059669
+  RoundCorner 15
+}
+
+rectangle "Módulo Pacientes" as MP {
+  component "PacienteController" as Ctrl
+  component "PacienteService" as Service
+  component "PacienteRepository" as Repo
+  database "DB_Pacientes\n(PostgreSQL)" as DB
+  component "FHIR Mapper" as FHIR
+  component "EventPublisher\n(Kafka)" as Pub
+}
+
+actor "Módulo Citas" as Citas
+actor "Módulo Clínico" as Clinico
+Ctrl --> Service : CRUD Pacientes
+Service --> Repo : Acceso a datos
+Service --> FHIR : Convertir a modelo FHIR
+Service --> Pub : Emitir eventos de dominio
+Repo --> DB : SQL/AES-256
+Citas --> Ctrl : Consultar datos paciente
+Clinico --> Ctrl : Obtener ficha
+
+note right of MP
+Gestiona información de pacientes,
+sincroniza con FHIR y publica eventos.
+end note
+@enduml

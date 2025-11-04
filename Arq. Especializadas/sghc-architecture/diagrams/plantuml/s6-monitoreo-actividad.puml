@@ -1,0 +1,15 @@
+@startuml
+title Escenario 4 — Monitoreo y Alertas Técnicas
+
+start
+:Microservicios SGHC\nexponen métricas /metrics;
+:Prometheus recolecta métricas;
+:Grafana actualiza dashboards en tiempo real;
+if (Se detecta umbral crítico?) then (Sí)
+  :Alertmanager genera alerta;
+  :Notifica al canal de Slack / Correo;
+else (No)
+  :Continúa monitoreo normal;
+endif
+stop
+@enduml

@@ -1,0 +1,147 @@
+@startuml
+title SGHC — Despliegue en Kubernetes (C4-Deployment)
+
+' =============================================
+' Configuración visual
+' =============================================
+skinparam backgroundColor #FFFFFF
+skinparam rectangle {
+  BackgroundColor #F9FAFB
+  BorderColor #1E3A8A
+  RoundCorner 15
+  FontColor #111827
+}
+skinparam database {
+  BackgroundColor #E0F2FE
+  BorderColor #1E3A8A
+}
+skinparam node {
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  FontColor #111827
+}
+skinparam artifact {
+  BackgroundColor #F3F4F6
+  BorderColor #111827
+}
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #111827
+  FontColor #111827
+}
+skinparam legend {
+  BackgroundColor #E5E7EB
+  BorderColor #9CA3AF
+}
+
+' =============================================
+' Leyenda
+' =============================================
+legend right
+  <b>**Leyenda**</b><br/>
+  🟦 Nodo Kubernetes<br/>
+  🗄️ Base de datos<br/>
+  📦 Servicio / Microservicio<br/>
+  👤 Actor externo
+end legend
+
+' =============================================
+' Actores externos
+' =============================================
+actor "Usuarios Externos" as Usuarios
+actor "Laboratorios / Aseguradoras" as Externos
+actor "Auditoría Externa" as AuditorExterno
+
+' =============================================
+' Clúster principal
+' =============================================
+node "Cluster Kubernetes — Producción" {
+  
+  node "Namespace: sghc-core" {
+    
+    node "Pod: api-gateway" {
+      artifact "NGINX / Kong Gateway" as Gateway
+    }
+
+    node "Pod: pacientes" {
+      artifact "Spring Boot Service" as Pacientes
+      database "DB_Pacientes\n(PostgreSQL + AES-256)" as DBPacientes
+    }
+
+    node "Pod: clinico" {
+      artifact "Spring Boot + HAPI FHIR" as Clinico
+      database "DB_Clinico\n(PostgreSQL)" as DBClinico
+    }
+
+    node "Pod: citas" {
+      artifact "Quarkus Service" as Citas
+      database "DB_Citas\n(PostgreSQL)" as DBCitas
+    }
+
+    node "Pod: farmacia" {
+      artifact "Node.js Service" as Farmacia
+      database "DB_Farmacia\n(MongoDB)" as DBFarmacia
+    }
+
+    node "Pod: auditoria" {
+      artifact "Spring Boot Service" as Auditoria
+      database "DB_Auditoria\n(PostgreSQL)" as DBAuditoria
+    }
+
+    node "Pod: interoperabilidad" {
+      artifact "FHIR/HL7 Adapter" as Interop
+    }
+  }
+
+  node "Namespace: seguridad" {
+    artifact "Keycloak OIDC" as Keycloak
+    database "UserDB\n(PostgreSQL)" as DBUser
+  }
+
+  node "Namespace: observabilidad" {
+    artifact "Prometheus" as Prom
+    artifact "Grafana" as Grafana
+    artifact "Elastic Stack (ELK)" as ELK
+  }
+}
+
+' =============================================
+' Relaciones principales (horizontalizadas)
+' =============================================
+Usuarios --> Gateway : HTTPS / OIDC
+Gateway --> Keycloak : Validación Token
+
+Externos --> Interop : Intercambio FHIR / HL7
+Interop --> Clinico : Registro de resultados
+Clinico --> DBClinico : Persistencia de datos médicos
+Auditoria --> DBAuditoria : Logs y trazabilidad
+Prom --> Grafana : Métricas y dashboards
+Grafana --> ELK : Visualización / búsqueda
+
+AuditorExterno --> Auditoria : Consultas de auditoría (solo lectura)
+
+' =============================================
+' Notas aclaratorias
+' =============================================
+note right of Keycloak
+  <b>Seguridad</b><br/>
+  OIDC + OAuth 2.0<br/>
+  Tokens JWT firmados<br/>
+  TLS 1.3
+end note
+
+note right of Interop
+  <b>Interoperabilidad</b><br/>
+  Estándares HL7 / FHIR<br/>
+  Integración con laboratorios y aseguradoras<br/>
+  Validación estructural
+end note
+
+note right of Clinico
+  <b>Módulo Clínico</b><br/>
+  Registro de atención médica<br/>
+  Diagnósticos (CIE-10) y recetas<br/>
+  Generación de eventos auditables
+end note
+
+@enduml

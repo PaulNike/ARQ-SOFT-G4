@@ -1,0 +1,34 @@
+@startuml
+title SGHC - C3: Módulo Clínico
+skinparam rectangle {
+  BackgroundColor #FFF7ED
+  BorderColor #EA580C
+  RoundCorner 15
+}
+
+rectangle "Módulo Clínico" as MCli {
+  component "AtencionController" as Ctrl
+  component "AtencionService" as Service
+  component "DiagnosticoAdapter\n(CIE-10)" as Adapter
+  component "FHIRMapper" as FHIR
+  database "DB_Clinico\n(PostgreSQL + AES-256)" as DB
+  component "KafkaPublisher" as Pub
+}
+
+actor "Médico" as Medico
+actor "Módulo Pacientes" as Pac
+actor "Módulo Farmacia" as Farma
+Medico --> Ctrl : Registrar atención
+Ctrl --> Service : Procesar datos clínicos
+Service --> Adapter : Validar códigos CIE-10
+Service --> FHIR : Generar recurso FHIR Observation
+Service --> DB : Guardar historia clínica
+Service --> Pub : Enviar eventos clínicos
+Pac --> Ctrl : Consultar historia
+Farma --> Ctrl : Validar receta
+
+note right of MCli
+Núcleo funcional del SGHC,
+gestiona historias clínicas y recetas electrónicas.
+end note
+@enduml

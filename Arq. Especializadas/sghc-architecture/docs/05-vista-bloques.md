@@ -2,7 +2,7 @@
 
 ## 5.1 Propósito de la vista
 
-Esta vista describe la **estructura interna del Sistema de Gestión de Historias Clínicas (SGHC)**, mostrando cómo los diferentes **módulos (bloques)** colaboran para cumplir los requisitos funcionales, no funcionales y los objetivos estrategicos definidos en las secciones anteriores.  
+Esta vista se describe la **estructura interna del Sistema de Gestión de Historias Clínicas (SGHC)**, mostrando cómo los diferentes **módulos (bloques)** colaboran para cumplir los requisitos funcionales, no funcionales y los objetivos estrategicos definidos en las secciones anteriores.  
 
 El propósito es ofrecer una visión técnica clara para desarrolladores, DevOps, QA y auditores de cumplimiento, explicando **cómo se organiza la solución en niveles (contenedores y componentes)**, y **qué responsabilidades asume cada bloque**.
 

@@ -1,0 +1,27 @@
+@startuml
+title SGHC - C3: Infraestructura y Monitoreo
+skinparam rectangle {
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  RoundCorner 15
+}
+
+rectangle "Infraestructura & Observabilidad" as IM {
+  component "Prometheus Exporter" as Prom
+  component "Grafana Dashboards" as Graf
+  component "ArgoCD Pipeline" as Argo
+  component "OpenTelemetry Collector" as OT
+  component "Alertmanager" as AM
+}
+
+actor "DevOps / SRE" as DevOps
+Prom --> Graf : Métricas en tiempo real
+OT --> Prom : Exportar trazas
+Argo --> IM : Despliegue automatizado
+AM --> DevOps : Notificaciones incidentes
+
+note right of IM
+Supervisa la plataforma, automatiza despliegues
+y mantiene observabilidad centralizada (IaC + GitOps).
+end note
+@enduml

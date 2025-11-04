@@ -1,0 +1,17 @@
+@startuml
+title Escenario 2 — Registro de Atención Médica
+
+actor "Paciente" as Pac
+actor "Médico" as Med
+participant "Módulo de Citas" as Citas
+participant "Módulo Clínico" as Clinico
+participant "Módulo Auditoría" as Audit
+participant "Kafka (Broker)" as Kafka
+
+Pac -> Citas : Crear cita médica
+Citas -> Kafka : Publicar evento cita.creada.v1
+Kafka -> Clinico : Notificar nueva cita
+Med -> Clinico : Registrar diagnóstico y receta
+Clinico -> Audit : Publicar evento atencion.creada.v1
+Audit -> Audit : Registrar evento (Log + BD)
+@enduml

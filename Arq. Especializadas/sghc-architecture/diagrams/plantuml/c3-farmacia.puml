@@ -1,0 +1,34 @@
+@startuml
+title SGHC - C3: Módulo de Farmacia
+skinparam rectangle {
+  BackgroundColor #FEF2F2
+  BorderColor #DC2626
+  RoundCorner 15
+}
+
+rectangle "Módulo de Farmacia" as Farma {
+  component "RecetaController" as Ctrl
+  component "ValidacionService" as Service
+  component "InventarioAdapter" as Inv
+  component "AseguradoraAdapter" as Aseg
+  database "DB_Farmacia\n(MongoDB / AES-256)" as DB
+  component "KafkaPublisher" as Pub
+}
+
+actor "Módulo Clínico" as Clinico
+actor "Farmacéutico" as FarmaUser
+actor "Aseguradora" as Aseguradora
+
+Clinico --> Ctrl : Enviar receta electrónica
+FarmaUser --> Ctrl : Validar y dispensar medicamento
+Ctrl --> Service : Procesar receta
+Service --> Inv : Verificar stock y lote
+Service --> Aseg : Validar cobertura
+Service --> DB : Guardar transacción
+Service --> Pub : Emitir evento receta.dispensada.v1
+
+note right of Farma
+Gestiona recetas electrónicas, control de stock y validaciones con aseguradoras.
+Usa FHIR MedicationRequest y seguridad OIDC + TLS 1.3.
+end note
+@enduml

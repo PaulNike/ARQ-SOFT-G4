@@ -1,0 +1,28 @@
+@startuml SGHC-C3-ApiGateway
+title SGHC - C3: API Gateway
+skinparam rectangle {
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  RoundCorner 15
+}
+
+rectangle "API Gateway (NGINX/Kong)" as Gateway {
+  component "Router" as Router
+  component "Security Filter\n(OIDC Validator)" as SecFilter
+  component "Rate Limiter" as Limiter
+  component "Metrics Exporter" as Metrics
+  component "Logger / Tracer" as Logger
+}
+
+actor "Usuario / App Web" as User
+User --> Router : HTTPs Requests
+Router --> SecFilter : Validar token JWT (OIDC)
+SecFilter --> Limiter : Controlar frecuencia
+Limiter --> Logger : Registrar evento
+Router --> "Microservicios SGHC" : Ruteo a API interna
+
+note right of Gateway
+Controla acceso, autentica usuarios y protege tráfico
+TLS 1.3 + OIDC + rate limiting + trazas centralizadas.
+end note
+@enduml

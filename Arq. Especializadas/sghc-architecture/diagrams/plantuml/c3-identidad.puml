@@ -1,0 +1,36 @@
+@startuml
+title SGHC - C3: Módulo de Identidad (Keycloak)
+skinparam rectangle {
+  BackgroundColor #E0F2FE
+  BorderColor #0369A1
+  RoundCorner 15
+}
+
+rectangle "Módulo de Identidad (Keycloak)" as Keycloak {
+  component "Login Service" as Login
+  component "Realm Manager" as Realm
+  component "User Directory" as Directory
+  component "Role / Policy Engine" as Policy
+  component "Token Service\n(JWT / OIDC)" as Token
+  database "User Store\n(LDAP / PostgreSQL)" as DB
+}
+
+actor "Usuario / Aplicación" as User
+actor "API Gateway" as Gateway
+actor "Administrador de Seguridad" as Admin
+
+User --> Login : Autenticación (username/password)
+Login --> Token : Generar token JWT
+Token --> Gateway : Entregar token firmado
+Gateway --> Token : Validar firma JWT
+Realm --> Directory : Consultar credenciales
+Policy --> Realm : Asignar roles / scopes
+Admin --> Policy : Configurar roles / políticas
+Directory --> DB : Persistir datos de usuarios
+
+note right of Keycloak
+Proveedor de identidad central del SGHC,
+implementa OIDC/OAuth2 con soporte RBAC y ABAC.
+Todos los tokens se firman con RSA256 y se renuevan cada 15 min.
+end note
+@enduml

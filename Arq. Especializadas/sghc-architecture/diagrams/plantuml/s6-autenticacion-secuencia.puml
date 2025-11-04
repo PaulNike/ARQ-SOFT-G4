@@ -1,0 +1,19 @@
+
+@startuml
+title Escenario 1 — Autenticación y acceso (OIDC)
+
+actor "Usuario (Paciente/Médico)" as User
+participant "Keycloak (OIDC)" as Auth
+participant "API Gateway" as Gateway
+participant "Módulo Clínico" as Clinico
+
+User -> Auth : Enviar credenciales
+Auth -> Auth : Validar usuario y roles
+Auth --> User : Retornar token JWT
+User -> Gateway : Solicitud HTTPS con token
+Gateway -> Auth : Validar firma JWT
+Gateway -> Clinico : Redirigir solicitud autorizada
+Clinico --> Gateway : Respuesta OK (200)
+Gateway --> User : Página / Datos clínicos
+
+@enduml

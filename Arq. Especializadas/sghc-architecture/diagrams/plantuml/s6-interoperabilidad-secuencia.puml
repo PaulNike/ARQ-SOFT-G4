@@ -1,0 +1,14 @@
+@startuml
+title Escenario 3 — Interoperabilidad con Laboratorio Externo
+
+actor "Laboratorio Externo" as Lab
+participant "Módulo Interoperabilidad" as Interop
+participant "Módulo Clínico" as Clinico
+participant "Módulo Auditoría" as Audit
+
+Lab -> Interop : POST /fhir/Observation (TLS 1.3)
+Interop -> Interop : Validar esquema FHIR
+Interop -> Clinico : Registrar resultado laboratorio
+Clinico -> Audit : Publicar evento resultadoLaboratorio.v1
+Audit -> Audit : Guardar trazabilidad
+@enduml

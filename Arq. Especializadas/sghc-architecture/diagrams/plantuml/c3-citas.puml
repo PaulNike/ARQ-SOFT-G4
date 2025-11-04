@@ -1,0 +1,31 @@
+@startuml
+title SGHC - C3: Módulo de Citas
+skinparam rectangle {
+  BackgroundColor #F0F9FF
+  BorderColor #0284C7
+  RoundCorner 15
+}
+
+rectangle "Módulo Citas" as MC {
+  component "CitaController" as Ctrl
+  component "CitaService" as Service
+  component "DisponibilidadAdapter" as Adapter
+  database "DB_Citas\n(PostgreSQL)" as DB
+  component "KafkaPublisher" as Pub
+  component "EventConsumer" as Cons
+}
+
+actor "Módulo Pacientes" as Pac
+actor "Módulo Clínico" as Clin
+Pac --> Ctrl : Crear cita
+Ctrl --> Service : Validar disponibilidad
+Service --> Adapter : Consultar agenda médica
+Service --> Pub : Emitir evento cita.creada.v1
+Clin --> Cons : Suscripción a eventos
+Service --> DB : Persistencia
+
+note right of MC
+Gestiona la reserva de citas y coordinación entre
+pacientes y médicos con consistencia eventual.
+end note
+@enduml

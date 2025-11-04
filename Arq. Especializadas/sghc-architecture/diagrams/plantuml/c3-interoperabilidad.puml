@@ -1,0 +1,32 @@
+@startuml
+title SGHC - C3: Interoperabilidad (FHIR/HL7)
+skinparam rectangle {
+  BackgroundColor #F5F3FF
+  BorderColor #7C3AED
+  RoundCorner 15
+}
+
+rectangle "Módulo Interoperabilidad" as MI {
+  component "FHIR API Controller" as FCtrl
+  component "FHIR Validator" as Validator
+  component "Mapper HL7 ↔ FHIR" as Mapper
+  component "IntegrationService" as Service
+  database "DB_Interop\n(PostgreSQL)" as DB
+  component "KafkaPublisher" as Pub
+}
+
+actor "Laboratorio Externo" as Lab
+actor "Aseguradora" as Aseg
+Lab --> FCtrl : POST /fhir/Observation
+Aseg --> FCtrl : GET /fhir/Claim
+FCtrl --> Validator : Validar esquema FHIR
+Validator --> Mapper : Convertir HL7 ↔ JSON FHIR
+Mapper --> Service : Persistir y notificar
+Service --> Pub : Publicar eventos clínicos
+Service --> DB : Guardar logs de interoperabilidad
+
+note right of MI
+Puente entre SGHC y sistemas externos
+basado en FHIR R4 y HL7 v2.x, con seguridad OIDC.
+end note
+@enduml
